@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/etc/network'
+let g:netrw_dirhist_2='/home/zpy/kudu/thirdparty/installed'
+let g:netrw_dirhist_3='/home/zpy/leveldb/.git'
+let g:netrw_dirhist_4='/home/zpy/mygo/src/go/build'
