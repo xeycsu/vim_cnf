@@ -1,5 +1,5 @@
-" vundle 环境设置
-filetype off
+" vundle 环境设置 
+filetype off 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
@@ -12,6 +12,7 @@ Plugin 'dyng/ctrlsf.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-scripts/xptemplate'
 Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'vim-scripts/Conque-Shell'
 "Plugin 'SirVer/ultisnips'
 call vundle#end()
 filetype plugin indent on
@@ -19,6 +20,12 @@ filetype plugin indent on
 
 " 定义快捷键的前缀，即<Leader>
 let mapleader=" "
+
+" 执行shell命令
+map <Leader>sh :!
+
+" 重新映射ESC键
+inoremap <Leader>j <esc>
 
 " 让配置变更立即生效
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
