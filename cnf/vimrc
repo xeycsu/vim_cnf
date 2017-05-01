@@ -1,34 +1,73 @@
-" vundle 环境设置 
-filetype off 
+"************ vundle 环境设置***************
+filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'bling/vim-airline'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdtree'
-Plugin 'fholgado/minibufexpl.vim'
-"Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'dyng/ctrlsf.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'vim-scripts/xptemplate'
-Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'vim-scripts/Conque-Shell'
-"Plugin 'SirVer/ultisnips'
+Bundle 'VundleVim/Vundle.vim'
+Bundle 'bling/vim-airline'
+Bundle 'majutsushi/tagbar'
+Bundle 'scrooloose/nerdtree'
+Bundle 'fholgado/minibufexpl.vim'
+"Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'dyng/ctrlsf.vim'
+"Bundle 'octol/vim-cpp-enhanced-higllight'
+Bundle 'vim-scripts/Conque-Shell'
+Bundle 'ShowTrailingWhitespace'
+Bundle 'Valloric/YouCompleteMe'
+"Bundle 'altercation/vim-colors-solarized'
+"Bundle 'derekwyatt/vim-fswitch'
+"Bundle 'kshenoy/vim-signature'
+"Bundle 'terryma/vim-multiple-cursors'
 call vundle#end()
 filetype plugin indent on
 
 
+" 配色方案
+"set background=dark
+"colorscheme solarized
+
+"*******************基本设置********************************
+" 让配置变更立即生效
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
+
 " 定义快捷键的前缀，即<Leader>
 let mapleader=" "
 
+" 在vim中切换mouse模式
+nnoremap <Leader>mu :set mouse=a<CR>
+nnoremap <Leader>nm :set mouse=<CR>
+
+
+" 重新映射space
+inoremap <Leader>j <Space>
+
 " 执行shell命令
-map <Leader>sh :!
+inoremap <Leader>sh :!
 
 " 重新映射ESC键
-inoremap <Leader>j <esc>
+inoremap jj <esc>
 
-" 让配置变更立即生效
-autocmd BufWritePost $MYVIMRC source $MYVIMRC
+" move to head of row
+map <Leader>a 0
+
+
+"*****************缩进设置*********************************
+"自适应不同语言的智能缩进
+filetype indent on
+" 将制表符扩展为空格
+set expandtab
+" 设置编辑时制表符占用空格数
+set tabstop=4
+" 设置格式化时制表符占用空格数
+set shiftwidth=4
+" 让 vim 把连续数量的空格视为一个制表符et softtabstop=4
+
+
+"********************编辑设置*******************************
+" 基于缩进或语法进行代码折叠
+set foldmethod=indent
+"set foldmethod=syntax
+" 启动vim时关闭折叠代码
+set nofoldenable
 
 " Vim 在启动一个新行的时候使用与前一行一样的缩进
 set autoindent
@@ -41,24 +80,19 @@ filetype plugin on
 " 开启实时搜索功能
 set incsearch
 " 找到文件结尾后停止查找
-set nowrapscan
+"set nowrapscan
 " 关闭兼容模式
 set nocompatible
 " vim 自身命令行模式智能补全
 set wildmenu
 
-
-" 定义快捷键关闭当前分割窗口
-nmap <Leader>q :q<CR>
-" 定义快捷键保存当前窗口内容
-nmap <Leader>w :w<CR>
-" 定义快捷键保存所有窗口内容并退出 vim
-nmap <Leader>WQ :wa<CR>:q<CR>
-" 不做任何保存，直接退出 vim
-nmap <Leader>Q :qa!<CR>
+" 开启语法高亮功能
+syntax enable
+" 允许用指定语法高亮配色方案替换默认方案
+syntax on
 
 " 总是显示状态栏
-set laststatus=2
+ set laststatus=2
 " 显示光标当前位置
 set ruler
 " 开启行号显示
@@ -68,22 +102,8 @@ set cursorline
 "set cursorcolumn
 " 高亮显示搜索结果
 set hlsearch
-
-" 开启语法高亮功能
-syntax enable
-" 允许用指定语法高亮配色方案替换默认方案
-syntax on
-
-
-"自适应不同语言的智能缩进
-filetype indent on
-" 将制表符扩展为空格
-set expandtab
-" 设置编辑时制表符占用空格数
-set tabstop=4
-" 设置格式化时制表符占用空格数
-set shiftwidth=4
-" 让 vim 把连续数量的空格视为一个制表符et softtabstop=4
+nnoremap <Leader>h :set hlsearch<CR>
+nnoremap <Leader>nh :set nohlsearch<CR>
 
 
 " 基于缩进或语法进行代码折叠
@@ -93,21 +113,44 @@ set foldmethod=syntax
 set nofoldenable
 
 
-" tagbar {
-" 设置 tagbar 子窗口的位置出现在主编辑区的左边 
-let tagbar_left=1 
+" ******************窗口设置***********************************
+" 定义快捷键关闭当前分割窗口
+nmap <Leader>q :q<CR>
+" 定义快捷键保存当前窗口内容
+nmap <Leader>w :w<CR>
+" 定义快捷键保存所有窗口内容并退出 vim
+nmap <Leader>WQ :wa<CR>:q<CR>
+" 不做任何保存，直接退出 vim
+nmap <Leader>Q :qa!<CR>
+
+" 依次遍历窗口
+nnoremap <Leader>d <C-w><C-w>
+" 跳转到右方的窗口
+nnoremap <Leader>lw <C-w>l
+" 跳转到左方的窗口
+nnoremap <Leader>hw <C-w>h
+" 跳转到上方的窗口
+nnoremap <Leader>kw <C-w>k
+" 跳转到下方的窗口
+nnoremap <Leader>jw <C-w>j
+
+
+
+"***************** Tagbar **************************************
+" 设置 tagbar 子窗口的位置出现在主编辑区的左边
+let tagbar_left=1
 " 设置显示／隐藏标签列表子窗口的快捷键。速记：identifier list by tag
-nnoremap <Leader>tb :TagbarToggle<CR> 
-" 设置标签子窗口的宽度 
-let tagbar_width=32 
-" tagbar 子窗口中不显示冗余帮助信息 
+nnoremap <Leader>tb :TagbarToggle<CR>
+" 设置标签子窗口的宽度
+let tagbar_width=32
+" tagbar 子窗口中不显示冗余帮助信息
 let g:tagbar_compact=1
 " 设置 ctags 对哪些代码标识符生成标签
 let g:tagbar_type_cpp = {
     \ 'kinds' : [
          \ 'c:classes:0:1',
          \ 'd:macros:0:1',
-         \ 'e:enumerators:0:0', 
+         \ 'e:enumerators:0:0',
          \ 'f:functions:0:1',
          \ 'g:enumeration:0:1',
          \ 'l:local:0:1',
@@ -136,10 +179,9 @@ let g:tagbar_type_cpp = {
          \ 'union'     : 'u'
      \ }
 \ }
-"}
 
 
-" nerdtree{
+"*********************** nerdtree ***********************************
 " 使用 NERDTree 插件查看工程文件。设置快捷键
 nmap <Leader>fl :NERDTreeToggle<CR>
 " 设置NERDTree子窗口宽度
@@ -155,12 +197,12 @@ let NERDTreeAutoDeleteBuffer=1
 "}
 
 
-" CtrlSF {
+"************************** CtrlSF ************************************
 " 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in project
 nnoremap <Leader>sp :CtrlSF<CR>
-"}
 
-" MiniBufExplorer {
+
+"************************* MiniBufExplorer **********************************
 " 显示/隐藏 MiniBufExplorer 窗口
 map <Leader>bl :MBEToggle<cr>
 " buffer 切换快捷键
@@ -169,8 +211,60 @@ map <C-x> :MBEbp<cr>
 map <Leader>b :b
 "}
 
-" AirLine {
+
+"*************************** AirLine ****************************************
 set t_Co=256
 "]
+
+
+"************************** YouComplete**************************************
+set completeopt=longest,menu    "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
+"上下左右键的行为 会显示其他信息
+"inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+"inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+"inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" :
+""\<PageDown>"
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+
+"youcompleteme  默认tab  s-tab 和自动补全冲突
+let g:ycm_key_list_select_completion=['<c-n>']
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion=['<c-p>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
+
+let g:ycm_collect_identifiers_from_tags_files=1    " 开启 YCM 基于标签引擎
+let g:ycm_min_num_of_chars_for_completion=2    "
+"从第2个键入字符就开始罗列匹配项
+let g:ycm_cache_omnifunc=0 " 禁止缓存匹配项,每次都重新生成匹配项
+let g:ycm_seed_identifiers_with_syntax=1   " 语法关键字补全
+nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>   "force recomile with
+"syntastic
+nnoremap <leader>lo :lopen<CR>    "open locationlist
+nnoremap <leader>lc :lclose<CR>    "close locationlist
+inoremap <leader><leader> <C-x><C-o>
+""在注释输入中也能补全
+let g:ycm_complete_in_comments = 1
+"在字符串输入中也能补全
+let g:ycm_complete_in_strings = 1
+""注释和字符串中的文字也会被收入补全
+let g:ycm_collect_identifiers_from_comments_and_strings = 0
+
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" 跳转到定义处
+let g:ycm_global_ycm_extra_conf = '.ycm_extra_conf.py'
+
+
+""""""""""""""""""""
+"strip all trailing whitespace in the current file
+
+"nnoremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
+
+
+
+
+
 
 
